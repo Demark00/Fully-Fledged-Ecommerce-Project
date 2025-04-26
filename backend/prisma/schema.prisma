@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int           @id @default(autoincrement())
+  email     String        @unique
+  name      String?
+  password  String
+  isActive  Boolean       @default(true)
+  createdAt DateTime      @default(now())
+  profile   Profile[]
+  cart      Cart[]
+  orders    OrderPlaced[]
+  product   Product[]
+}
+
+model Product {
+  id          Int           @id @default(autoincrement())
+  userId      Int
+  name        String
+  description String?
+  price       Float
+  image       String?
+  category    String        @default("uncategorized")
+  stock       Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id])
+  cartItems   Cart[]
+  orders      OrderPlaced[]
+}
+
+model Cart {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Profile {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  phone     String
+  image     String?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  addresses Address[]
+}
+
+model Address {
+  id        Int      @id @default(autoincrement())
+  houseNo   Int?
+  block     String?
+  area      String
+  city      String
+  state     String
+  pincode   Int
+  profileId Int
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+enum OrderStatus {
+  ACCEPTED
+  ONTHEWAY
+  DELIVERED
+  CANCELLED
+}
+
+model OrderPlaced {
+  id         Int         @id @default(autoincrement())
+  userId     Int
+  productId  Int
+  quantity   Int
+  totalPrice Float
+  createdAt  DateTime    @default(now())
+  status     OrderStatus @default(ACCEPTED)
+
+  user       User        @relation(fields: [userId], references: [id])
+  product    Product     @relation(fields: [productId], references: [id])
+}
