@@ -5,30 +5,30 @@ export declare class CartController {
     constructor(cartService: CartService);
     createCart(userId: number, dto: CreateCartDto): Promise<{
         id: number;
+        createdAt: Date;
         userId: number;
         productId: number;
         quantity: number;
-        createdAt: Date;
     }>;
     getCart(userId: number): Promise<({
         product: {
-            id: number;
-            userId: number;
-            createdAt: Date;
             name: string;
+            id: number;
+            createdAt: Date;
+            userId: number;
+            image: string | null;
             description: string | null;
             price: number;
-            image: string | null;
-            category: string;
             stock: number;
+            category: string;
             updatedAt: Date;
         };
     } & {
         id: number;
+        createdAt: Date;
         userId: number;
         productId: number;
         quantity: number;
-        createdAt: Date;
     })[]>;
     deleteCart(userId: number, cartId: number): Promise<{
         message: string;

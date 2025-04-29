@@ -5,10 +5,10 @@ export declare class UserController {
     private userService;
     constructor(userService: UserService);
     getMe(user: User): {
-        id: number;
         email: string;
-        name: string | null;
         password: string;
+        name: string | null;
+        id: number;
         isActive: boolean;
         createdAt: Date;
     };
