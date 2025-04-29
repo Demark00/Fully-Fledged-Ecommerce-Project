@@ -5,42 +5,42 @@ export declare class OrderPlacedService {
     constructor(prisma: PrismaService);
     createOrder(userId: number, dto: OrderPlacedDto): Promise<{
         id: number;
+        createdAt: Date;
         userId: number;
         productId: number;
         quantity: number;
         totalPrice: number;
-        createdAt: Date;
         status: import(".prisma/client").$Enums.OrderStatus;
     }>;
     createMultipleOrders(userId: number): Promise<{
         id: number;
+        createdAt: Date;
         userId: number;
         productId: number;
         quantity: number;
         totalPrice: number;
-        createdAt: Date;
         status: import(".prisma/client").$Enums.OrderStatus;
     }[]>;
     getOrders(userId: number): Promise<({
         product: {
-            id: number;
-            userId: number;
-            createdAt: Date;
             name: string;
+            id: number;
+            createdAt: Date;
+            userId: number;
+            image: string | null;
             description: string | null;
             price: number;
-            image: string | null;
-            category: string;
             stock: number;
+            category: string;
             updatedAt: Date;
         };
     } & {
         id: number;
+        createdAt: Date;
         userId: number;
         productId: number;
         quantity: number;
         totalPrice: number;
-        createdAt: Date;
         status: import(".prisma/client").$Enums.OrderStatus;
     })[]>;
     deleteOrder(userId: number, orderId: number): Promise<{
